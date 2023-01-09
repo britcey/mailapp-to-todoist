@@ -7,6 +7,7 @@ tell application "Mail"
 	repeat with theMessage in the mailMessages
 		-- strip single quotes - TODO, figure out how to gracefully escape them
 		set messageSubject to my replace_chars(the subject of the theMessage, "'", "")
+		set messageSubject to my replace_chars(messageSubject, "&", "%26")
 		copy messageSubject to end of messageList
 		set messageUrl to "message://%3c" & theMessage's message id & "%3e"
 
