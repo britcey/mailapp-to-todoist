@@ -13,7 +13,7 @@ tell application "Mail"
 
 		set task to argv & " [" & messageSubject & "]" & "(" & messageUrl & ") "
 
-		set curl_command to "curl https://todoist.com/sync/v9/quick/add -H 'Authorization: Bearer " & todoistToken & "' -d text='" & task & "'"
+		set curl_command to "curl https://api.todoist.com/api/v1/tasks/quick -H 'Authorization: Bearer " & todoistToken & "' -d text='" & task & "'"
 
 		do shell script curl_command
 		
