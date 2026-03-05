@@ -5,13 +5,13 @@ tell application "Mail"
 	set todoistToken to (system attribute "todoistToken")
 	set mailMessages to the selection	
 	repeat with theMessage in the mailMessages
-		-- strip single quotes - TODO, figure out how to gracefully escape them
-		set messageSubject to my replace_chars(the subject of the theMessage, "'", "")
-		set messageSubject to my replace_chars(messageSubject, "&", "%26")
+		set messageSubject to my replace_chars(the subject of the theMessage, "&", "%26")
 		copy messageSubject to end of messageList
 		set messageUrl to "message://%3c" & theMessage's message id & "%3e"
 
 		set task to argv & " [" & messageSubject & "]" & "(" & messageUrl & ") "
+		-- Escape single quotes for shell: replace ' with '\''
+		set task to my replace_chars(task as string, "'", "'\\''")
 
 		set curl_command to "curl https://api.todoist.com/api/v1/tasks/quick -H 'Authorization: Bearer " & todoistToken & "' -d text='" & task & "'"
 
